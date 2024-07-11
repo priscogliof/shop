@@ -1,0 +1,25 @@
+
+<head>
+
+  <link rel="stylesheet" href="product-form.component.css" defer>
+
+</head><form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="Name">Name:</label>
+        <input type="text" class="form-control" id="productName" formControlName="name" required>
+      </div>
+    <div class="form-group">
+      <label for="productDescription">Product Description:</label>
+      <input type="text" class="form-control" id="productDescription" formControlName="productDescription" required>
+    </div>
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      <input type="number" class="form-control" id="quantity" formControlName="quantity" required>
+    </div>
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input type="number" class="form-control" id="price" formControlName="price" required>
+    </div>
+    <button mat-stroked-button  style="background-color: #007bff;" id="subbmit" type="submit">Submit</button>  
+  </form>
+  

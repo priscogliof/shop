@@ -1,0 +1,14 @@
+
+  .mat-stroked-button  {
+    background-color: pink;
+    color: green;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+::ng-deep p{
+    color: red;
+}
