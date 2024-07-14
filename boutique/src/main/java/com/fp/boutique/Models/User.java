@@ -21,6 +21,7 @@ import jakarta.persistence.Table;
 @Table(name="users")
 @JsonSerialize
 public class User implements UserDetails {
+	public User(){};
 	
 	public User(String userName, String email, String password) {
 		super();
