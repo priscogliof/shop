@@ -1,4 +1,4 @@
-Boutique : Back end java Spring et MySQL
+Boutique : Back end java Spring et MySQL, la version de java utilisée est la 22.
 
 Boutique Front : angular 18, en cours et loin d'être terminé
 
