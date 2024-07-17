@@ -1,0 +1,11 @@
+algorithm : HS256
+secret : your-secret-key
+
+payload : {
+
+  "sub": "admin"}
+
+header : {
+    "Authorization":"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJBRE1JTiJ9XSwiZXhwIjoxNzIxMjM2MTEzfQ.r0hRbfvvXmwkWo5D287-NBzfOdupw7oajZtKIdmRPwA"}
+
+

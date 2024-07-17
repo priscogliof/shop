@@ -6,6 +6,8 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,75 +31,58 @@ import com.fp.boutique.Services.UserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class Security {
-	
-	@Autowired
+    
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService();
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public CustomAuthenticationProvider customAuthenticationProvider() {
+        return new CustomAuthenticationProvider();
+    }
+    
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+    
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter();
+    }
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    	http.csrf().disable()
 
-	  private UserDetailsService userDetailsService;
-	
-	/*@Autowired
+        .addFilterAfter(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
-	  private JWTAuthenticationFilter jwtAuthenticationFilter;*/
-
-	  @Bean
-
-	  public UserDetailsService userDetailsService() {
-
-	    return new UserDetailsService();
-
-	  }
-
-	  
-
-	  @Bean
-
-	  public PasswordEncoder passwordEncoder() {
-
-	    return new BCryptPasswordEncoder();
-
-	  }
-	  @Bean
-
-	    public CustomAuthenticationProvider customAuthenticationProvider() {
-		  return new CustomAuthenticationProvider();
-	  };
-
-	  @Bean
-
-	  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-
-	      return authenticationConfiguration.getAuthenticationManager();
-
-	  }
-	  
-	  
-
-	  @Bean
-	  public ProviderManager authenticationProvider() {
-	      return new ProviderManager(new AuthenticationProvider[]{customAuthenticationProvider()});
-	  }
-
-	  /*@Bean
-	  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-
-		    return http.getSharedObject(AuthenticationManagerBuilder.class).build();
-
-		}*/
-	  /*@Bean
-
-	  public JWTAuthenticationFilter jwtAuthenticationFilter() {
-
-	    return new JWTAuthenticationFilter();
-
-	  }*/
-  
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable()
         .authorizeRequests()
-        .requestMatchers("/**").permitAll();
+
+        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+        .requestMatchers(HttpMethod.POST, "admin/**").authenticated()
+        .requestMatchers(HttpMethod.DELETE, "admin/**").authenticated() // require auth for POST requests
+        .requestMatchers(HttpMethod.PUT, "admin/**").authenticated() // require auth for POST requests
+
+        .anyRequest().permitAll() // allow anonymous access for other requests
+
+        .and()
+
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+        .and()
+
+        .exceptionHandling();
+
     return http.build();
-  }
-  
+    }
   /*@Bean
 
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -107,7 +93,7 @@ public class Security {
 
   }*/
   
-  @Bean
+  /*@Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Arrays.asList("*"));
@@ -136,7 +122,7 @@ public class Security {
             .maxAge(3600);
       }
     };
-  }
+  }*/
   
  
 }

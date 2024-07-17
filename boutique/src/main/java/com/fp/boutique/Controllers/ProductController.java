@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,35 +62,11 @@ public class ProductController {
         }
 
     }
-    /*@GetMapping("/{id}")
-    //@ResponseBody
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-
-        return productService.getProductById(id)
-
-                .map(ResponseEntity::ok)
-
-                .orElse(ResponseEntity.notFound().build());
-
-    }
-    
-   /* @GetMapping("/products")
-    @ResponseBody
-    public ResponseEntity<List<Product>> getAllProduct() {
-    	System.out.println(productService.getAllProduct().toString());
-        return productService.getAllProduct() 
-        		.map(ResponseEntity::ok)
-
-                .orElse(ResponseEntity.notFound().build());
-        	
-
-                
-
-    }*/
+   
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-
-    @PostMapping("/product")
+    
+    @PostMapping("admin/product")
 
     public ResponseEntity<?> createProduit(@RequestBody Product newProduit) {
 
@@ -109,6 +87,37 @@ public class ProductController {
         }
 
     }
+    
+    @DeleteMapping("admin/product/{id}")
+
+    public ResponseEntity<?> deleteMyProduct(@PathVariable long id) {
+    	try {
+    	productService.deleteMyProduct(id);
+    	logger.info("product deleted");
+    	}
+    	catch(Exception e){
+    		logger.error("Error deleteing product", e);
+    	}
+        return ResponseEntity.status(HttpStatus.OK).build();
+
+    }
+
+
+
+@PutMapping("admin/product/{id}")
+
+public ResponseEntity<?> updateMyEntity(@PathVariable Long id, @RequestBody Product updatedMyEntity) {
+	try {
+		Product updatedEntity = productService.updateMyEntity(id, updatedMyEntity);
+		logger.info("product updated");
+	}
+    catch(Exception e){
+		logger.error("Error updating product", e);
+	}
+
+    return ResponseEntity.ok(updatedMyEntity);
+
+}
 
 }
 

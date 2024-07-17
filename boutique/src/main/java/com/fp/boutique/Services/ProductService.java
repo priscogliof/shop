@@ -36,4 +36,40 @@ public class ProductService {
 	        return productRepository.findAll();
 
 	    }
+
+	
+
+		public void deleteMyProduct(long id) {
+			 productRepository.deleteById(id);
+			// TODO Auto-generated method stub
+			
+		}
+
+		public Product updateMyEntity(Long id, Product updatedProduct) {
+			
+			   Product existingProduct = productRepository.findById(id).orElseThrow();
+
+		        existingProduct.setName(updatedProduct.getName());
+
+		        existingProduct.setDescription(updatedProduct.getDescription());
+
+		        existingProduct.setPrice(updatedProduct.getPrice());
+
+		        existingProduct.setQuantity(updatedProduct.getQuantity());
+
+		        existingProduct.setCode(updatedProduct.getCode());
+
+		        existingProduct.setInventoryStatus(updatedProduct.getInventoryStatus());
+
+		        existingProduct.setCategory(updatedProduct.getCategory());
+
+		        existingProduct.setImage(updatedProduct.getImage());
+
+		        existingProduct.setRating(updatedProduct.getRating());
+
+		        return productRepository.save(existingProduct);
+
+		    }
+			
+			
 	}
