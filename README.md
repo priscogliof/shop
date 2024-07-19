@@ -1,6 +1,6 @@
-Boutique : Back end java Spring et MySQL, la version de java utilisée est la 22.
+Boutique : TEST ALTEN : Back end java Spring et MySQL, la version de java utilisée est la 22.
 
-Boutique Front : angular 18, en cours et loin d'être terminé
+Boutique Front : angular 18, en cours et loin d'être terminé => a ne pas utiliser pour tester le back
 
 La configuration de la base de données peut etre trouvée dans le dossier "SQL"
 
